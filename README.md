@@ -1,4 +1,4 @@
-# 10minmail.py
+# Python 10 minute mail
 ### Just what *you* need
 ##### _to know to run this damn file._
 
@@ -16,7 +16,7 @@ This is a command-line python client which generates an email address that lasts
 `pip install pyperclip`
 ## Usage
 ### Console
-`python3 10minmail.py`
+`python3 minutemail.py`
 <br><br>
 It will then copy the resulting email to your clipboard
 <br>
