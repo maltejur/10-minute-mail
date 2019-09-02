@@ -6,6 +6,7 @@ import websocket
 import pyperclip
 import sys
 import os
+import requests
 from json import loads
 from datetime import datetime
 
@@ -19,6 +20,9 @@ class mailbox(object):
 		self.close = self.ws.close
 		self.email = self.next()[1:].split(":")[0]
 		self.next()
+	def getMail(self,ref):
+		request = requests.get("https://dropmail.me/download/mail/"+self.email+"/"+ref)
+		return request.text
 
 def main(box):
 	pyperclip.copy(box.email)
