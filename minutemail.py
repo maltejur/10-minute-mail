@@ -7,6 +7,7 @@ import pyperclip
 import sys
 import os
 import requests
+import re
 from json import loads
 from datetime import datetime
 
@@ -16,25 +17,30 @@ class mailbox(object):
 		super(mailbox, self).__init__()
 		self.ws = websocket.WebSocket()
 		self.ws.connect("wss://dropmail.me/websocket")
-		self.next = self.ws.recv
 		self.close = self.ws.close
-		self.email = self.next()[1:].split(":")[0]
-		self.next()
-	def getMail(self,ref):
-		request = requests.get("https://dropmail.me/download/mail/"+self.email+"/"+ref)
-		return request.text
+		self.email = self.ws.recv()[1:].split(":")[0]
+		self.ws.recv()
+	def next(self,html=True):
+		mail = loads(self.ws.recv()[1:])
+		request = requests.get("https://dropmail.me/download/mail/"+self.email+"/"+mail["ref"])
+		if html: 
+			try:
+				mail["html"] = re.search(r"Content-Type: text\/html;.*?\r\n.*?\r\n\r\n((.|\n)*)\r\n\r\n--------------",request.text).group(1)
+			except AttributeError:
+				pass
+		return mail
 
 def main(box):
 	pyperclip.copy(box.email)
 	print (box.email+" was copied to clipboard")
 	while True:
 		result =  box.next()
+		print("\nRecieved following at {0}".format( datetime.now()))
 		try:
-			print("Recieved following at {0}".format( datetime.now()))
-			for k in loads(result[1:]).items():
-				print("\t%s: %s" % k)
+			for k in result:
+				print("{0}: {1}".format(k, result[k]))
 		except:
-			print("Recieved:{1} {0}\n".format(result, datetime.now()))
+			print(result)
 
 if __name__ == '__main__':
 	try:
