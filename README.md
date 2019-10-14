@@ -29,6 +29,24 @@ mailbox=minutemail.mailbox()
 print(mailbox.email)            # get the email-adress of the mailbox
 while(True):
     print(mailbox.next())       # get mail in a raw form 
+
+""" Ouput:
+iexrcerpc@emltmp.com
+{
+    'to_mail_orig': 'iexrcerpc@emltmp.com',
+    'to_mail': 'iexrcerpc@emltmp.com',
+    'text_source': 'text',
+    'text': 'Some Content\r\n',
+    'subject': 'Test',
+    'ref': '59bu6khv8e0grt72o3rsnv3o7ffn8dn7',
+    'received': '2019-10-14T18:08:55Z',
+    'has_html': False,
+    'from_mail': 'mike@gmail.com',
+    'from_hdr': 'Mike',
+    'decode_status': 0,
+    'attached': []
+}
+"""
 ```
 This scipt waits for an email from a specific address:
 ```
@@ -39,7 +57,7 @@ mailbox=minutemail.mailbox()
 print(mailbox.email)                            # get the email-adress of the mailbox
 
 while(True):
-    result = loads(mailbox.next()[1:])
+    result = mailbox.next()
     if(result["from_mail"]=="my@email.com"):    # if email is from specific adress
         print(result["text"])                   # print the content of the mail
         break                                   # and exit
