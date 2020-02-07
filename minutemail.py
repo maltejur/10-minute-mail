@@ -22,8 +22,8 @@ class mailbox(object):
 		self.ws.recv()
 	def next(self,html=True):
 		mail = loads(self.ws.recv()[1:])
-		request = requests.get("https://dropmail.me/download/mail/"+self.email+"/"+mail["ref"])
-		if html: 
+		if(mail["has_html"] and html):
+			request = requests.get("https://dropmail.me/download/mail/"+self.email+"/"+mail["ref"])
 			try:
 				mail["html"] = re.search(r"Content-Type: text\/html;.*?\r\n.*?\r\n\r\n((.|\n)*)\r\n\r\n--------------",request.text).group(1)
 			except AttributeError:

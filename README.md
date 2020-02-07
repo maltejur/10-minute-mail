@@ -51,7 +51,6 @@ iexrcerpc@emltmp.com
 This scipt waits for an email from a specific address:
 ```
 import minutemail
-from json import loads
 
 mailbox=minutemail.mailbox()
 print(mailbox.email)                            # get the email-adress of the mailbox
